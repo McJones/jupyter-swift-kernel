@@ -32,7 +32,7 @@ The output is captured and then sent back to Jupyter.
 
 - Currently everything has to be ascii, so no poop emoji please.
 - If you crash the kernel or Jupyter without exiting it will leave temporary files called `canonical.swift` and `scratch.swift` on your machine.
-- Unlike many other Jupiter kernels if you type something like `1 + 1` it will display no result because of how I implemented the kernel. So wrap anything code like that inside a `print()` call to see it. The code will still run so you can do things like `let thing = 5` and then `print(thing)` and this will work fine.
+- Unlike many other Jupiter kernels if you type something like `1 + 1` it will display no result because of how I implemented the kernel. So wrap any code like that inside a `print()` call to see it. The code will still run so you can do things like `let thing = 5` and then `print(thing)` and this will work fine.
 
 ## Future features
 
