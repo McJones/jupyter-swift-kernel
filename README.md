@@ -20,7 +20,7 @@ The output is captured and then sent back to Jupyter.
 
 1. [Install Swift](https://swift.org/download/) for your platform
 2. [Install Jupyter](http://jupyter.org/install.html)
-3. Download the kernel and save it somewhere memorable
+3. Download the kernel and save it somewhere memorable. The important files are `kernel.json` and `swiftkernel.py`
 4. Install the kernel into Jupyter: `jupyter kernelspec install /path/to/swiftkernel --user`
   - You can verify the kernel installed correctly: `jupyter kernelspec list`
   - It will appear in the list of kernels installed under the name of the project folder
