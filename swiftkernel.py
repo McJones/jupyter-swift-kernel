@@ -28,15 +28,32 @@ class SwiftKernel(Kernel):
             if not silent:
                 stream = {'name':'stdout', 'text':dump}
                 self.send_response(self.iopub_socket, 'stream', stream)
+    
+            return {
+                        'status':'ok',
+                        'execution_count':self.execution_count,
+                        'payload':[],
+                        'user_expressions':{}
+                   }
         else:
-            # temporary until I can work out the proper error messaging in Jupiter
-            stream = {'name':'stdout', 'text':dump}
-            self.send_response(self.iopub_socket, 'stream', stream)
+            # every example does it like this but this just feels weird
+            # why does the execution_count increment?!
+            if not silent:
+                stream = {
+                            'status' : 'error',
+                            'ename': 'ERROR',
+                            'evalue': 'error',
+                            'traceback': dump
+                         }
+                self.send_response(self.iopub_socket, 'error', stream)
         
-        return {'status':'ok',
-                'execution_count':self.execution_count,
-                'payload':[],
-                'user_expressions':{}}
+            return {
+                        'status':'error',
+                        'execution_count':self.execution_count,
+                        'ename': 'ERROR',
+                        'evalue': 'error',
+                        'traceback': dump
+                   }
 
     def do_shutdown(self, restart):
         # delete the temporary swift file(s) and directory
@@ -74,7 +91,7 @@ class SwiftKernel(Kernel):
         for line in swift.stderr.readlines():
             # to clean up the default error message swift returns
             line = re.sub('^.*error: ', '', line)
-            errorOutput.append(line)
+            errorOutput.append(line.rstrip("\n\r"))
         
         retval = swift.wait()
         
@@ -90,7 +107,6 @@ class SwiftKernel(Kernel):
             # dumping the dodgy file
             os.remove(swiftFileLocation)
             # returning the error(s)
-            errorOutput = "".join(errorOutput)
             return 1, errorOutput
 
 if __name__ == '__main__':
