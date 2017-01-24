@@ -10,7 +10,7 @@ from ipykernel.kernelbase import Kernel
 class SwiftKernel(Kernel):
     # Jupiter stuff
     implementation = 'Swift'
-    implementation_version = '1.0'
+    implementation_version = '1.0.1'
     language = 'swift'
     language_version = '3.0.2'
     language_info = {'mimetype': 'text/plain', 'file_extension': 'swift', 'name': 'swift'}
@@ -72,7 +72,7 @@ class SwiftKernel(Kernel):
         
         # handle all valid output
         for line in swift.stdout.readlines():
-            newOutput.append(self.singleStrip(line))
+            newOutput.append(line.rstrip("\n\r"))
         
         # handle any errors
         for line in swift.stderr.readlines():
@@ -96,14 +96,6 @@ class SwiftKernel(Kernel):
             # returning the error(s)
             errorOutput = "".join(errorOutput)
             return 1, errorOutput
-
-    # strip off the trailing end line but not ALL endlines
-    def singleStrip(self, line):
-        if line.endswith("\n"):
-            return line[:-1]
-            if line.endswith("\r\n"):
-                return x[:-2]
-        return line[:]
 
 if __name__ == '__main__':
     from ipykernel.kernelapp import IPKernelApp
