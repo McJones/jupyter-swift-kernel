@@ -10,7 +10,7 @@ from ipykernel.kernelbase import Kernel
 class SwiftKernel(Kernel):
     # Jupiter stuff
     implementation = 'Swift'
-    implementation_version = '1.0.1'
+    implementation_version = '1.1.0'
     language = 'swift'
     language_version = '3.0.2'
     language_info = {'mimetype': 'text/plain', 'file_extension': 'swift', 'name': 'swift'}
@@ -23,12 +23,7 @@ class SwiftKernel(Kernel):
         errorCode, dump = self.runCode(code)
         
         if errorCode == 0:
-            # quick and dirty hack to turn utf into ascii
-            # need to work out how to get Jupiter to speak utf-8
-            a = '\n'.join(dump)
-            b = a.decode("utf-8")
-            c = b.encode("ascii", "ignore")
-            dump = c
+            dump = '\n'.join(dump)
             
             if not silent:
                 stream = {'name':'stdout', 'text':dump}
@@ -60,7 +55,8 @@ class SwiftKernel(Kernel):
             shutil.copyfile(canonicalFile, swiftFileLocation)
         
         with open(swiftFileLocation, 'a') as swiftFile:
-            swiftFile.write("{0}\n".format(command))
+            unicodeCommand = (command + "\n").encode("UTF-8")
+            swiftFile.write(unicodeCommand)
             
         newOutput = []
         errorOutput = []

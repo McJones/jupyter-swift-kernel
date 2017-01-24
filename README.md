@@ -1,19 +1,19 @@
 # Swift kernel for Project Jupyter
 
-A simple proof of concept kernel that adds Apple's [Swift programming language](https://swift.org) into [Project Jupyter](https://jupyter.org).
+A simple kernel that adds Apple's [Swift programming language](https://swift.org) into [Project Jupyter](https://jupyter.org).
 
 Thanks to [O'Reilly Media](http://www.oreilly.com) for sponsoring this development, I would never have gotten around to this without them.
 
 This is implemented as a Python wrapper kernel and supports the basic functionality of Jupyter in both the console and in notebooks.
 It works by creating a temporary file, dumping the user text into the file and running that through swift.
-The output is captured and then sent back to Jupyter.
+The output is captured, massaged a little bit, and then sent back to Jupyter.
 
 ## Installation
 
 ### Requirements
 
 - Swift 3
-- Python 2.7 (although it should work fine with Python 3)
+- Python (I used 2.7 but 3 should also be fine)
 - Jupyter
 
 ### Steps
@@ -30,15 +30,14 @@ The output is captured and then sent back to Jupyter.
 
 ## Caveats
 
-- Currently everything has to be ascii, so no poop emoji please.
 - If you crash the kernel or Jupyter without exiting it will leave temporary files called `canonical.swift` and `scratch.swift` on your machine.
-- Unlike many other Jupiter kernels if you type something like `1 + 1` it will display no result because of how I implemented the kernel. So wrap any code like that inside a `print()` call to see it. The code will still run so you can do things like `let thing = 5` and then `print(thing)` and this will work fine.
+- Unlike many other Jupiter kernels if you type something like `1 + 1` it will display no result because of how I implemented the kernel. So wrap any code like that inside a `print()` call to see it. The code will still run so you can do things like `let thing = 5` and then later `print(thing)` and this will work fine.
+- errors just appear underneath the code as valid output.
 
 ## Future features
 
 - Add prints to non-printing statements
 - Proper error handling
-- Get Notebooks to accept utf so I don't have to crunch Swift output down to ascii
 - Implement Jupyter's nice to have features
 - Work out a better way of interfacing with Swift that doesn't need temporary files
 - Support warnings instead of just ignoring them
@@ -64,7 +63,7 @@ It is the fastest and easiest way to get a Jupyter kernel up and running. The in
 
 **Why Python 2.7 and not 3.x?**
 
-It is what was installed on my Macbook.
+It is what was installed on my Macbook. Nothing I've done is 2.7 specific and everything will work fine in Python 3.x. As I already had 2.7 installed on my machine I didn't see the benefit in installing another version. Had I realised how weird the default macOS install of Python was I probably would have.
 
 **I typed a statement in, ran it and nothing appeared, what gives?**
 
@@ -72,7 +71,7 @@ Because of how it is currently implemented statements that are non-printing, suc
 
 **I keep getting an error saying something like "No module named SwiftKernel" when running the kernel what's up?**
 
-I had this appear almost randomly during development as I have a very broken installation of Python on my Macbook from years of doing horrible things to it. I fixed it by manually setting PYTHONPATH in Bash to where the kernel was installed by Jupyter and this fixed it. According to the Jupyter docs this isn't necessary but hey, maybe you've also done terrible things to Python.
+I had this appear almost randomly during development as I have a very broken installation of Python on my Macbook from years of doing horrible things to it. I fixed it by manually setting PYTHONPATH in Bash to where the kernel was installed by Jupyter and this fixed it. According to the Jupyter docs this shouldn't be necessary but hey, maybe you've also done terrible things to Python.
 
 **Tim, this Python code looks like it was written by someone who doesn't know how to Python**
 
