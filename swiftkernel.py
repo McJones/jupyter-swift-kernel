@@ -98,7 +98,7 @@ class SwiftKernel(Kernel):
             # putting the valid code back into the canonical file
             shutil.copyfile(swiftFileLocation, canonicalFile)
             # returning the result
-            diff = newOutput.replace(self.output,"")
+            diff = newOutput[len(self.output):]
             self.output = newOutput
             return 0, diff
         else:
