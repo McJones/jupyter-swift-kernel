@@ -16,7 +16,7 @@ class SwiftKernel(Kernel):
     language_info = {'mimetype': 'text/plain', 'file_extension': 'swift', 'name': 'swift'}
     banner = "Swift kernel"
     # my stuff
-    output = []
+    output = ""
     swiftDirectory = tempfile.mkdtemp()
     
     def do_execute(self, code, silent, store_history=True, user_expressions=None, allow_stdin=False):
@@ -75,7 +75,6 @@ class SwiftKernel(Kernel):
             unicodeCommand = (command + "\n").encode("UTF-8")
             swiftFile.write(unicodeCommand)
             
-        newOutput = []
         errorOutput = []
         
         # because who needs warnings, right?!
@@ -84,8 +83,7 @@ class SwiftKernel(Kernel):
         swift = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
         # handle all valid output
-        for line in swift.stdout.readlines():
-            newOutput.append(line.rstrip("\n\r"))
+        newOutput = swift.stdout.read()
         
         # handle any errors
         for line in swift.stderr.readlines():
@@ -100,8 +98,8 @@ class SwiftKernel(Kernel):
             # putting the valid code back into the canonical file
             shutil.copyfile(swiftFileLocation, canonicalFile)
             # returning the result
-            diff = [x for x in newOutput if x not in self.output]
-            self.output = self.output + diff
+            diff = newOutput.replace(self.output,"")
+            self.output = newOutput
             return 0, diff
         else:
             # dumping the dodgy file
