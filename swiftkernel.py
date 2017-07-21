@@ -10,7 +10,7 @@ from ipykernel.kernelbase import Kernel
 class SwiftKernel(Kernel):
     # Jupiter stuff
     implementation = 'Swift'
-    implementation_version = '1.1.0'
+    implementation_version = '1.1.1'
     language = 'swift'
     language_version = '3.0.2'
     language_info = {'mimetype': 'text/plain', 'file_extension': 'swift', 'name': 'swift'}
