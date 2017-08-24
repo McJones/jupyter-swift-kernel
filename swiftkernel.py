@@ -23,7 +23,6 @@ class SwiftKernel(Kernel):
         errorCode, dump = self.runCode(code)
         
         if errorCode == 0:
-            dump = '\n'.join(dump)
             
             if not silent:
                 stream = {'name':'stdout', 'text':dump}
