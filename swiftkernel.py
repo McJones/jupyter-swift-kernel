@@ -4,7 +4,7 @@
 # copyright Tim Nugent, made available under the MIT License
 # see the repository https://github.com/McJones/jupyter-swift-kernel/ for full details
 
-import subprocess, os, shutil, tempfile, re
+import subprocess, os, shutil, tempfile, re, json
 from ipykernel.kernelbase import Kernel
 
 class SwiftKernel(Kernel):
@@ -25,7 +25,7 @@ class SwiftKernel(Kernel):
         if errorCode == 0:
             
             if not silent:
-                stream = {'name':'stdout', 'text':dump}
+                stream = {'name':'stdout', 'text':dump.decode('utf-8')}
                 self.send_response(self.iopub_socket, 'stream', stream)
     
             return {
