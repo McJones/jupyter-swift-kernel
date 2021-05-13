@@ -70,7 +70,7 @@ class SwiftKernel(Kernel):
         if os.path.isfile(canonicalFile):
             shutil.copyfile(canonicalFile, swiftFileLocation)
         
-        with open(swiftFileLocation, 'a') as swiftFile:
+        with open(swiftFileLocation, 'ab') as swiftFile:
             unicodeCommand = (command + "\n").encode("UTF-8")
             swiftFile.write(unicodeCommand)
             
